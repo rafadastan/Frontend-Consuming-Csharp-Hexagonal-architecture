@@ -1,0 +1,53 @@
+<div *ngIf="message" class="alert alert-secondary" role="alert">
+    <strong>{{message}}</strong>
+</div>
+ 
+<h5>Cadastro de Pessoas</h5>
+<hr />
+ 
+<form [formGroup]="formCadastro" (ngSubmit)="onSubmit()" autocomplete="off">
+ 
+    <div class="row">
+ 
+        <div class="col-md-4">
+            <label>Primeiro nome:</label>
+            <input type="text" class="form-control" formControlName="primeiroNome" />
+            <div class="text-danger" *ngIf="form.primeiroNome.touched && form.primeiroNome.invalid">
+                <span *ngIf="form.primeiroNome.errors.required">
+                    Por favor, informe o seu primeiro nome.
+                </span>
+            </div>
+        </div>
+ 
+        <div class="col-md-4">
+            <label>Sobrenome:</label>
+            <input type="text" class="form-control" formControlName="sobrenome" />
+            <div class="text-danger" *ngIf="form.sobrenome.touched && form.sobrenome.invalid">
+                <span *ngIf="form.sobrenome.errors.required">
+                    Por favor, informe o seu sobrenome.
+                </span>
+            </div>
+        </div>
+ 
+        <div class="col-md-4">
+            <label>Email:</label>
+            <input type="email" class="form-control" formControlName="email" />
+            <div class="text-danger" *ngIf="form.email.touched && form.email.invalid">
+                <span *ngIf="form.email.errors.required">
+                    Por favor, informe o seu email.
+                </span>
+                <span *ngIf="form.email.errors.email">
+                    Por favor, informe um email válido.
+                </span>
+            </div>
+        </div>
+ 
+    </div>
+ 
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <input type="submit" [disabled]="!formCadastro.valid" value="Realizar Cadastro" class="btn btn-success" />
+        </div>
+    </div>
+ 
+</form>

@@ -1,0 +1,110 @@
+<div *ngIf="message_exclusao" class="alert alert-secondary" role="alert">
+    <strong>{{message_exclusao}}</strong>
+</div>
+ 
+<h5>Consulta de Pessoas</h5>
+<hr />
+ 
+<!-- régua de paginação -->
+<pagination-controls (pageChange)="handlePageChange($event)" previousLabel="Página anterior" nextLabel="Próxima página">
+</pagination-controls>
+ 
+<table class="table table-hover table-sm table-striped">
+    <thead>
+        <tr>
+            <th>Primeiro nome</th>
+            <th>Sobrenome</th>
+            <th>Email</th>
+            <th>Operações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of pessoas | paginate : { itemsPerPage : 5, currentPage : page }">
+            <td>{{p.primeiroNome | uppercase}}</td>
+            <td>{{p.sobrenome | uppercase}}</td>
+            <td>{{p.email | lowercase}}</td>
+            <td>
+                <button class="btn btn-danger btn-sm" (click)="excluirPessoa(p.id)">Excluir</button>
+                &nbsp;
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#janela_edicao"
+                    (click)="obterPessoa(p.id)">Alterar</button>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                Quantidade de pessoas: {{pessoas.length}}
+            </td>
+        </tr>
+    </tfoot>
+</table>
+ 
+<!-- modal para edição -->
+<div id="janela_edicao" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edição de Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+ 
+                <div *ngIf="message_edicao" class="alert alert-secondary" role="alert">
+                    <strong>{{message_edicao}}</strong>
+                </div>
+ 
+                <form [formGroup]="formEdicao" (ngSubmit)="onSubmit()" autocomplete="off">
+ 
+                    <input type="hidden" formControlName="id" />
+ 
+                    <div class="row">
+ 
+                        <div class="col-md-4">
+                            <label>Primeiro nome:</label>
+                            <input type="text" class="form-control" formControlName="primeiroNome" />
+                            <div class="text-danger" *ngIf="form.primeiroNome.touched && form.primeiroNome.invalid">
+                                <span *ngIf="form.primeiroNome.errors.required">
+                                    Por favor, informe o seu primeiro nome.
+                                </span>
+                            </div>
+                        </div>
+ 
+                        <div class="col-md-4">
+                            <label>Sobrenome:</label>
+                            <input type="text" class="form-control" formControlName="sobrenome" />
+                            <div class="text-danger" *ngIf="form.sobrenome.touched && form.sobrenome.invalid">
+                                <span *ngIf="form.sobrenome.errors.required">
+                                    Por favor, informe o seu sobrenome.
+                                </span>
+                            </div>
+                        </div>
+ 
+                        <div class="col-md-4">
+                            <label>Email:</label>
+                            <input type="email" class="form-control" formControlName="email" />
+                            <div class="text-danger" *ngIf="form.email.touched && form.email.invalid">
+                                <span *ngIf="form.email.errors.required">
+                                    Por favor, informe o seu email.
+                                </span>
+                                <span *ngIf="form.email.errors.email">
+                                    Por favor, informe um email válido.
+                                </span>
+                            </div>
+                        </div>
+ 
+                    </div>
+ 
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <input type="submit" [disabled]="!formEdicao.valid" value="Salvar Alterações"
+                                class="btn btn-success" />
+                        </div>
+                    </div>
+ 
+                </form>
+ 
+            </div>
+        </div>
+    </div>
+</div>
